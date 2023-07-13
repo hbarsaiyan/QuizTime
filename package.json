@@ -1,0 +1,28 @@
+{
+	"devDependencies": {
+		"tailwindcss": "^3.3.2"
+	},
+	"dependencies": {
+		"@tailwindcss/forms": "^0.5.3",
+		"flowbite": "^1.6.5"
+	},
+	"name": "quiztime",
+	"version": "1.0.0",
+	"description": "Online quiz creation and assessment platform.",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/hbarsaiyan/QuizTime.git"
+	},
+	"keywords": [
+		"flask",
+		"mysql",
+		"tailwindcss",
+		"bootstrap"
+	],
+	"author": "Harsh Barsaiyan",
+	"license": "AGPL-3.0-or-later",
+	"bugs": {
+		"url": "https://github.com/hbarsaiyan/QuizTime/issues"
+	},
+	"homepage": "https://github.com/hbarsaiyan/QuizTime#readme"
+}
