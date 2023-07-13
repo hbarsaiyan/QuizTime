@@ -1,0 +1,204 @@
+<html class="h-full bg-gray-100">
+	<head>
+		<title>Register</title>
+	</head>
+	<link
+		rel="stylesheet"
+		href="{{ url_for('static', filename='style.css') }}"
+	/>
+	<link
+		rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.1.6/css/intlTelInput.css"
+	/>
+	<link
+		rel="icon"
+		type="image/png"
+		sizes="32x32"
+		href="https://tailwindcss.com/favicons/favicon-32x32.png?v=3"
+	/>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.1.6/js/intlTelInput.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/1.6.5/datepicker.min.js"></script>
+
+	<body class="h-full">
+		<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
+				<img
+					class="mx-auto h-10 w-auto"
+					src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+					alt="Your Company"
+				/>
+				<h2
+					class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+				>
+					Sign up
+				</h2>
+			</div>
+
+			<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-2xl">
+				<div class="bg-white px-6 py-6 shadow sm:rounded-lg sm:px-12">
+					<form
+						class="space-y-6"
+						action="{{ url_for('register') }}"
+						method="POST"
+					>
+						<div class="grid gap-6 mb-10 md:grid-cols-2">
+							<div>
+								<label
+									for="name"
+									class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+									>Name</label
+								>
+								<input
+									type="text"
+									id="name"
+									name="name"
+									class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+									placeholder="John Doe"
+									required
+								/>
+							</div>
+
+							<div class="relative max-w-sm">
+								<label
+									for="dob"
+									class="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+									>Date of Birth</label
+								>
+								<input
+									required
+									datepicker
+									datepicker-autohide
+									datepicker-format="dd/mm/yyyy"
+									type="text"
+									id="dob"
+									name="dob"
+									class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+									placeholder="DD/MM/YYYY"
+								/>
+							</div>
+
+							<div>
+								<label
+									for="phone"
+									class="inline-block mb-2 text-sm font-medium text-gray-900"
+									>Phone number</label
+								>
+								<input
+									type="tel"
+									id="phone"
+									name="phone"
+									class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+									onchange="appendCountryCode(this)"
+									required
+								/>
+							</div>
+							<div>
+								<label
+									for="email"
+									class="inline-block text-sm font-medium text-gray-900"
+									>Email</label
+								>
+								<div class="mt-2">
+									<input
+										type="email"
+										id="email"
+										name="email"
+										class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+										placeholder="you@example.com"
+										required
+									/>
+								</div>
+							</div>
+
+							<div>
+								<label
+									for="gender"
+									class="inline-block text-sm font-medium text-gray-900"
+									>Gender</label
+								>
+								<select
+									id="gender"
+									name="gender"
+									class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+								>
+									<option selected>Choose</option>
+									<option value="M">Male</option>
+									<option value="F">Female</option>
+									<option value="O">Others</option>
+								</select>
+							</div>
+
+							<div>
+								<label
+									for="password"
+									class="block mb-2 text-sm font-medium text-gray-900"
+									>Password</label
+								>
+								<input
+									type="password"
+									id="password"
+									name="password"
+									class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+									placeholder="•••••••••"
+									required
+								/>
+							</div>
+						</div>
+						<div>
+							<button
+								type="submit"
+								class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+							>
+								Sign up
+							</button>
+							<div class="text-sm text-red-500 mt-5 text-center">
+								{{ msg }}
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<p class="mt-10 text-center text-sm text-gray-500">
+					Already have an account?
+					<a
+						href="{{ url_for('login_email') }}"
+						class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500"
+						>Sign in</a
+					>
+				</p>
+			</div>
+		</div>
+		<script>
+			document.querySelector('form').addEventListener('formdata', (e) => {
+				const formData = e.originalEvent.formData;
+
+				formData.set('phone', iti.getNumber());
+			});
+		</script>
+		<script>
+			const input = document.querySelector('#phone');
+			let iti = intlTelInput(input, {
+				utilsScript:
+					'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.6/build/js/utils.js',
+				initialCountry: 'auto',
+				hiddenInput: 'full',
+				geoIpLookup: function (callback) {
+					fetch('https://ipapi.co/json')
+						.then(function (res) {
+							return res.json();
+						})
+						.then(function (data) {
+							callback(data.country_code);
+						})
+						.catch(function () {
+							callback('in');
+						});
+				},
+			});
+
+			function appendCountryCode(inputElm) {
+				inputElm.value = iti.getNumber();
+			}
+		</script>
+	</body>
+</html>
