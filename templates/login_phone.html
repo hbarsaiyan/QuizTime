@@ -11,6 +11,7 @@
 		href="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.1.6/css/intlTelInput.css"
 	/>
 	<link rel="icon" type="image/png" sizes="32x32" href="https://tailwindcss.com/favicons/favicon-32x32.png?v=3">
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/intl-tel-input/18.1.6/js/intlTelInput.min.js"></script>
 	<body class="h-full">
 		<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -53,6 +54,7 @@
 								id="phone"
 								name="phone"
 								class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
+								onchange="appendCountryCode(this)"
 								required
 							/>
 						</div>
@@ -95,6 +97,30 @@
 						>Sign up</a
 					>
 				</p>
+				<script>
+					const input = document.querySelector('#phone');
+					let iti = intlTelInput(input, {
+						utilsScript:
+							'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.6/build/js/utils.js',
+						initialCountry: 'auto',
+						geoIpLookup: function (callback) {
+							fetch('https://ipapi.co/json')
+								.then(function (res) {
+									return res.json();
+								})
+								.then(function (data) {
+									callback(data.country_code);
+								})
+								.catch(function () {
+									callback('in');
+								});
+						},
+					});
+
+					function appendCountryCode(inputElm) {
+						inputElm.value = iti.getNumber();
+					}
+				</script>
 			</div>
 		</div>
 	</body>
