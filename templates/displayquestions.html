@@ -1,0 +1,47 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="mb-5">
+	<div class="table-responsive-sm shadow-soft rounded">
+		<table class="table table-striped">
+			<tr>
+				<th class="border-0 thf" scope="col">QUESTION</th>
+				<th class="border-0 thf" scope="col">A</th>
+				<th class="border-0 thf" scope="col">B</th>
+				<th class="border-0 thf" scope="col">C</th>
+				<th class="border-0 thf" scope="col">D</th>
+				<th class="border-0 thf" scope="col">ANSWER</th>
+				<th class="border-0 thf" scope="col">UPDATE</th>
+				<th class="border-0 thf" scope="col">DELETE</th>
+			</tr>
+			<tbody>
+				{% for res in callresults%}
+				<tr>
+					<td class="thf">{{res['q']}}</td>
+					<td class="thf">{{res['a']}}</td>
+					<td class="thf">{{res['b']}}</td>
+					<td class="thf">{{res['c']}}</td>
+					<td class="thf">{{res['d']}}</td>
+					<td class="thf">{{res['ans']}}</td>
+					<td class="thf">
+						<a
+							href="/update/{{testid}}/{{res['qid']}}"
+							class="btn tdf btn-success"
+							>UPDATE</a
+						>
+					</td>
+					<td class="thf">
+						<a
+							href="/delete/{{testid}}/{{res['qid']}}"
+							class="btn tdf btn-danger"
+							>DELETE</a
+						>
+					</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+<center>
+<a href="/addques/{{testid}}/{{newq}}" class="btn btn-primary text-secondary mr-3">Add Question</a>
+</center>
+{% endblock %}

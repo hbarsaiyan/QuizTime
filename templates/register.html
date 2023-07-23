@@ -23,10 +23,10 @@
 		<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 				<img
-					class="mx-auto h-10 w-auto"
-					src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-					alt="Your Company"
-				/>
+					class="mx-auto h-auto w-50"
+					src="../static/logo.svg"
+					alt="QuizTime"
+				/>	
 				<h2
 					class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
 				>
@@ -130,6 +130,82 @@
 
 							<div>
 								<label
+									for="role"
+									class="inline-block text-sm font-medium text-gray-900"
+									>Role</label
+								>
+								<select
+									id="role"
+									name="role"
+									class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+									onchange="roleChange(event)"
+								>
+									<option disabled selected>Choose</option>
+									<option value="S">Student</option>
+									<option value="T">Teacher</option>
+								</select>
+							</div>
+
+							<div id = "progdiv" class="hidden">
+								<label
+									for="programme"
+									class="inline-block text-sm font-medium text-gray-900"
+									>Programme</label
+								>
+								<select
+									id="programme"
+									name="programme"
+									class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+								>
+									<option disabled selected>Choose</option>
+									<option value="BTech">B.Tech</option>
+									<option value="MTech">M.Tech</option>
+								</select>
+							</div>
+
+							<div id = "branchdiv" class="hidden">
+								<label
+									for="branch"
+									class="inline-block text-sm font-medium text-gray-900"
+									>Branch</label
+								>
+								<select
+									id="branch"
+									name="branch"
+									class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+								>
+									<option disabled selected>Choose</option>
+									<option value="ECE">ECE</option>
+									<option value="CSE">CSE</option>
+									<option value="DSAI">DSAI</option>
+								</select>
+							</div>
+
+							<div id = "semdiv" class="hidden">
+								<label
+									for="semester"
+									class="inline-block text-sm font-medium text-gray-900"
+									>Semester</label
+								>
+								<select
+									id="semester"
+									name="semester"
+									class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+								>
+									<option disabled selected>Choose</option>
+									<option value="1">1</option>
+									<option value="2">2</option>
+									<option value="3">3</option>
+									<option value="4">4</option>
+									<option value="5">5</option>
+									<option value="6">6</option>
+									<option value="7">7</option>
+									<option value="8">8</option>
+								</select>
+							</div>
+
+							<div>
+								<label
 									for="password"
 									class="block mb-2 text-sm font-medium text-gray-900"
 									>Password</label
@@ -169,6 +245,19 @@
 			</div>
 		</div>
 		<script>
+			function roleChange(e) {
+				if (e.target.value == 'S') {
+					document.getElementById('progdiv').style.display =
+						'block';
+					document.getElementById('branchdiv').style.display = 'block';
+					document.getElementById('semdiv').style.display = 'block';
+				} else {
+					document.getElementById('progdiv').style.display = 'none';
+					document.getElementById('branchdiv').style.display =
+						'none';
+					document.getElementById('semdiv').style.display = 'none';
+				}
+			}
 			document.querySelector('form').addEventListener('formdata', (e) => {
 				const formData = e.originalEvent.formData;
 

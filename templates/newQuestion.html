@@ -1,0 +1,97 @@
+{% extends 'layout.html' %} {% block body %}
+<main>
+	<section class="min-vh-75 d-flex bg-primary align-items-center">
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-12 col-md-8 col-lg-6 justify-content-center">
+					<div class="card bg-primary shadow-soft border-light p-4">
+						<div class="card-header text-center pb-0">
+							<h2 class="h1 col">Add Question</h2>
+						</div>
+						<form action="" method="POST" class="mt-4">
+							<!-- Form -->   
+							<div class="form-group">
+								<label for="exampleInputIcon3"
+									>QUESTION</label
+								>
+								<div class="input-group mb-4">
+									<input
+										name="ques"
+										class="form-control"
+										id="exampleInputIcon3"
+										type="text"
+									/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputIcon3">A</label>
+								<div class="input-group mb-4">
+									<input
+										name="ao"
+										type="text"
+										class="form-control"
+										id="exampleInputIcon3"
+									/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputIcon3">B</label>
+								<div class="input-group mb-4">
+									<input
+										name="bo"
+										type="text"
+										class="form-control"
+										id="exampleInputIcon3"
+									/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputIcon3">C</label>
+								<div class="input-group mb-4">
+									<input
+										name="co"
+										type="text"
+										class="form-control"
+										id="exampleInputIcon3"
+									/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputIcon3">D</label>
+								<div class="input-group mb-4">
+									<input
+										name="do"
+										type="text"
+										class="form-control"
+										id="exampleInputIcon3"
+									/>
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="exampleInputIcon3">ANSWER</label>
+								<div class="input-group mb-4">
+									<input
+										name="anso"
+										type="text"
+										class="form-control"
+										id="exampleInputIcon3"
+									/>
+								</div>
+							</div>
+                            <center>
+							<input
+								type="submit"
+								class="btn btn-success"
+								value="ADD QUESTION"
+							/>
+                        </center>
+						</form>
+					</div>
+					<div></div>
+				</div>
+			</div>
+		</div>
+	</section>
+</main>
+<br /><br />
+{% endblock %}

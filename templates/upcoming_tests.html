@@ -1,0 +1,24 @@
+{% extends 'layout.html' %} {% block body %}
+<div class="mb-5">
+	<div class="table-responsive-sm shadow-soft rounded">
+		<table class="table table-striped">
+			<tr>
+				<th class="border-0 thf" scope="col">SUBJECT</th>
+				<th class="border-0 thf" scope="col">TOPIC</th>
+				<th class="border-0 thf" scope="col">START TIME</th>
+				<th class="border-0 thf" scope="col">END TIME</th>
+			</tr>
+			<tbody>
+				{% for res in callresults%}
+				<tr>
+					<td class="thf">{{res['subject']}}</td>
+					<td class="thf">{{res['topic']}}</td>
+					<td class="thf">{{res['start']}}</td>
+					<td class="thf">{{res['end']}}</td>
+				</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+{% endblock %}

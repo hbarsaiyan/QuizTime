@@ -6,23 +6,28 @@
 		rel="stylesheet"
 		href="{{ url_for('static', filename='style.css') }}"
 	/>
-	<link rel="icon" type="image/png" sizes="32x32" href="https://tailwindcss.com/favicons/favicon-32x32.png?v=3">
+	<link
+		rel="icon"
+		type="image/png"
+		sizes="32x32"
+		href="https://tailwindcss.com/favicons/favicon-32x32.png?v=3"
+	/>
 	<body class="h-full">
 		<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 				<img
-					class="mx-auto h-10 w-auto"
-					src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-					alt="Your Company"
+					class="mx-auto h-auto w-50"
+					src="../static/logo.svg"
+					alt="QuizTime"
 				/>
 				<h2
-					class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900"
+					class="mt-10 text-center text-2xl sm:text-2xl font-bold leading-9 tracking-tight text-gray-900"
 				>
 					Sign in to your account
 				</h2>
 			</div>
 
-			<div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+			<div class="mt-10 sm:mx-auto sm:w-full max-w-full sm:max-w-sm">
 				<div class="bg-white px-6 py-12 shadow sm:rounded-lg sm:px-12">
 					<form
 						class="space-y-6"
@@ -50,7 +55,7 @@
 								name="email"
 								class="mt-2 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5"
 								placeholder="you@example.com"
-                                required
+								required
 							/>
 						</div>
 
