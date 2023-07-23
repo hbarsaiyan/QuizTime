@@ -1,0 +1,74 @@
+{% extends 'layout.html' %} {% block body %}
+<h1 align="center">Welcome, {{session.name}}!</h1>
+<br />
+
+<div class="container">
+	<br /><br />
+	<center>
+		<div class="row">
+			<div class="col-3 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img
+								src="static/upcoming.png"
+								alt=""
+								width="350px"
+							/>
+						</center>
+						<br />
+						<center>
+							<a
+								href="/upcoming-tests"
+								class="btn btn-primary text-secondary mr-3"
+								>Upcoming Tests</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-3 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img
+								src="static/test.png"
+								alt=""
+								width="350px"
+							/>
+						</center>
+						<br />
+						<center>
+							<a
+								href="/give-test"
+								class="btn btn-primary text-secondary mr-3"
+								>Give Test</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-3 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img src="static/result.png" alt="" width="350px" />
+						</center>
+						<br />
+						<center>
+							<a
+								href="/{{session.email}}/tests-given"
+								class="btn btn-primary text-secondary mr-3"
+								>Results</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	</center>
+</div>
+<br /><br /><br />
+{% endblock %}
