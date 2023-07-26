@@ -751,5 +751,5 @@ def audiodisplaystudentslogs(testid,email):
 	return render_template("audiodisplaystudentslogs.html", testid = testid, email = email, callresults = callresults)
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", debug=True)
+    app.run(debug=True, port=os.getenv("PORT", default=5000), host='0.0.0.0')
     # app.run(host='192.168.1.8', port=5000, debug=True, threaded=False)
