@@ -12,6 +12,7 @@
 		sizes="32x32"
 		href="https://tailwindcss.com/favicons/favicon-32x32.png?v=3"
 	/>
+	<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
 	<body class="h-full">
 		<div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
 			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
@@ -74,6 +75,27 @@
 								required
 							/>
 						</div>
+						<div class="imgcapure grid place-items-center">
+							<video id="stream" width="370" height="320">
+								<canvas id="capture" width="370" height="320">
+								</canvas>
+							</video>
+							<br />
+							<button
+								id="btn-capture"
+								type="button"
+								class="btn btn-primary justify-content-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-60"
+							>
+								Capture Image
+							</button>
+							<br />
+							<div id="snapshot"></div>
+							<input
+								type="hidden"
+								id="image_hidden"
+								name="image_hidden"
+							/>
+						</div>
 
 						<div>
 							<button
@@ -99,5 +121,67 @@
 				</p>
 			</div>
 		</div>
+		<script>
+			var btnCapture = document.getElementById('btn-capture');
+			var stream = document.getElementById('stream');
+			var capture = document.getElementById('capture');
+			var snapshot = document.getElementById('snapshot');
+			var cameraStream = null;
+
+			btnCapture.addEventListener('click', captureSnapshot);
+
+			function startStreaming() {
+				var mediaSupport = 'mediaDevices' in navigator;
+
+				if (mediaSupport && null == cameraStream) {
+					navigator.mediaDevices
+						.getUserMedia({ video: true })
+						.then(function (mediaStream) {
+							cameraStream = mediaStream;
+							stream.srcObject = mediaStream;
+							stream.play();
+						})
+						.catch(function (err) {
+							console.log('Unable to access camera: ' + err);
+						});
+				} else {
+					alert('Your browser does not support media devices.');
+					return;
+				}
+			}
+
+			function stopStreaming() {
+				if (null != cameraStream) {
+					var track = cameraStream.getTracks()[0];
+					track.stop();
+					stream.load();
+					cameraStream = null;
+				}
+			}
+
+			function captureSnapshot() {
+				if (null != cameraStream) {
+					var ctx = capture.getContext('2d');
+					var img = new Image();
+					ctx.drawImage(stream, 0, 0, capture.width, capture.height);
+					img.src = capture.toDataURL('image/png');
+					img.width = 370;
+					img.height = 320;
+					//console.log(capture.toDataURL( "image/png" ));
+					snapshot.innerHTML = '';
+					snapshot.appendChild(img);
+					var d1 = capture.toDataURL('image/png');
+					var res = d1.replace('data:image/png;base64,', '');
+					console.log(res);
+					snapshot.innerHTML = '';
+					snapshot.appendChild(img);
+					$('#image_hidden').val(res);
+				}
+			}
+			window.onload = function () {
+				startStreaming();
+				captureSnapshot();
+			};
+		</script>
 	</body>
 </html>

@@ -1,0 +1,93 @@
+{% extends 'layout.html' %} {% block body %}
+<br><br>
+<h1 align="center">Student Monitoring Statistics of {{email}}</h1>
+<br />
+
+<div class="container">
+	<br /><br />
+	<center>
+		<div class="row">
+			<div class="col-4 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img
+								src="{{ url_for('static', filename='windowevent.png')}}"
+								alt=""
+								width="350px"
+							/>
+						</center>
+						<br />
+						<center>
+							<a
+								href="/wineventstudentslogs/{{testid}}/{{email}}"
+								class="btn btn-primary text-secondary mr-3"
+								>Window Events</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-4 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img
+								src="{{ url_for('static', filename='mobiledetected.png')}}"
+								alt=""
+								width="350px"
+							/>
+						</center>
+						<br />
+						<center>
+							<a
+								href="/mobdisplaystudentslogs/{{testid}}/{{email}}"
+								class="btn btn-primary text-secondary mr-3"
+								>Mobile Detected</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+
+			<div class="col-4 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img src="{{ url_for('static', filename='multipleperson.png')}}" alt="" width="350px" />
+						</center>
+						<br />
+						<center>
+							<a
+								href="/persondisplaystudentslogs/{{testid}}/{{email}}"
+								class="btn btn-primary text-secondary mr-3"
+								>Multiple Persons Detected</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+
+            <div class="col-4 box">
+				<div class="card shadow">
+					<div class="card-body">
+						<center>
+							<img src="{{ url_for('static', filename='audioevent.png')}}" alt="" width="350px" />
+						</center>
+						<br />
+						<center>
+							<a
+								href="/audiodisplaystudentslogs/{{testid}}/{{email}}"
+								class="btn btn-primary text-secondary mr-3"
+								>Audio Events</a
+							>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+	</center>
+</div>
+<br /><br /><br />
+{% endblock %}

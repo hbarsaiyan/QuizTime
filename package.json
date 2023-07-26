@@ -1,28 +1,27 @@
 {
-	"devDependencies": {
-		"@tailwindcss/forms": "^0.5.3",
-		"tailwindcss": "^3.3.2"
-	},
-	"dependencies": {
-		"flowbite": "^1.7.0"
-	},
-	"name": "quiztime",
-	"version": "1.0.0",
-	"description": "Online quiz creation and assessment platform.",
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/hbarsaiyan/QuizTime.git"
-	},
-	"keywords": [
-		"flask",
-		"mysql",
-		"tailwindcss",
-		"bootstrap"
-	],
-	"author": "Harsh Barsaiyan",
-	"license": "AGPL-3.0-or-later",
-	"bugs": {
-		"url": "https://github.com/hbarsaiyan/QuizTime/issues"
-	},
-	"homepage": "https://github.com/hbarsaiyan/QuizTime#readme"
+  "devDependencies": {
+    "@tailwindcss/forms": "^0.5.3"
+  },
+  "dependencies": {
+    "flowbite": "^1.7.0",
+    "headroom.js": "^0.12.0"
+  },
+  "name": "quiztime",
+  "version": "1.1.0",
+  "description": "Online quiz creation and assessment platform using Flask and MySQL.",
+  "main": "app.py",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hbarsaiyan/QuizTime.git"
+  },
+  "keywords": [
+    "flask",
+    "mysql"
+  ],
+  "author": "Harsh Barsaiyan",
+  "license": "AGPL-3.0-or-later",
+  "bugs": {
+    "url": "https://github.com/hbarsaiyan/QuizTime/issues"
+  },
+  "homepage": "https://github.com/hbarsaiyan/QuizTime#readme"
 }
