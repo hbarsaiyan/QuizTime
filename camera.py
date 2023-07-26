@@ -3,6 +3,7 @@ from face_landmarks import get_landmark_model, detect_marks
 import tensorflow as tf
 import numpy as np
 import cv2
+import os
 import base64
 from PIL import Image
 from io import BytesIO   
@@ -236,7 +237,11 @@ def YoloV3(size=None, channels=3, anchors=yolo_anchors,
                      name='yolo_nms')((boxes_0[:3], boxes_1[:3], boxes_2[:3]))
 
     return Model(inputs, outputs, name='yolov3')
-    
+
+if (os.path.isfile("./models/yolov3.weights")):
+    print("File exists")
+else:
+    wget.download("https://pjreddie.com/media/files/yolov3.weights", "./models/yolov3.weights")
 yolo = YoloV3()
 load_darknet_weights(yolo, 'models/yolov3.weights') 
 
