@@ -60,4 +60,4 @@ jobs:
         with:
           app-name: 'quiztime'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_D6E492FC307340BF889E6E0D96EA1DEB }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_42339020E73F45A48EB4E5FF5DE0DA73 }}
