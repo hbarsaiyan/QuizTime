@@ -3,6 +3,7 @@ import hashlib
 import os
 import re
 import cv2
+import wget
 from flask import Flask, request, render_template, flash, redirect, url_for, session, logging, send_file
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
@@ -16,7 +17,7 @@ from coolname import generate_slug
 from datetime import timedelta, datetime
 from flask import render_template_string
 from flask_mobility import Mobility
-import camera
+from proctoring.proctoring import get_analysis, yolov3_model_v3_path
 from deepface import DeepFace
 import functools
 import math
@@ -279,7 +280,7 @@ def create_test():
         start_date_time = str(start_date) + " " + str(start_time)
         end_date_time = str(end_date) + " " + str(end_time)
         duration = int(form.duration.data)*60
-        print(duration,flush=True)
+        print(duration, flush=True)
         # password = form.password.data
         subject = form.subject.data
         topic = form.topic.data
@@ -287,7 +288,8 @@ def create_test():
         branch = form.branch.data
         semester = form.semester.data
         class_id = get_class_id(programme, branch, semester)
-        cur.execute('INSERT INTO testinfo (email, test_id, start, end, duration, subject, topic, class_id) values(%s,%s,%s,%s,%s,%s,%s,%s)', (dict(session)['email'], test_id, start_date_time, end_date_time, duration, subject, topic, class_id))
+        cur.execute('INSERT INTO testinfo (email, test_id, start, end, duration, subject, topic, class_id) values(%s,%s,%s,%s,%s,%s,%s,%s)', (dict(
+            session)['email'], test_id, start_date_time, end_date_time, duration, subject, topic, class_id))
         cur.connection.commit()
         cur.close()
         session['testid'] = test_id
@@ -435,7 +437,7 @@ def intermediate():
                     cur1.execute(
                         'INSERT INTO teststatus(email,test_id,time_left) values(%s,%s,%s)', (session['email'], test_id, duration))
                     mysql.connection.commit()
-                
+
                 return redirect(url_for('test', testid=test_id))
             else:
                 msg = '⚠️ Face identity could not be verified !'
@@ -449,8 +451,9 @@ def test(testid):
     global duration, marked_ans, subject, topic
     if request.method == 'GET':
         try:
-            data = {'duration': duration, 'marks': '', 'q': '', 'a': '', 'b':'','c':'','d':'' }
-            return render_template('testquiz.html' ,**data, answers=marked_ans, subject=subject, topic=topic, tid=testid)
+            data = {'duration': duration, 'marks': '',
+                    'q': '', 'a': '', 'b': '', 'c': '', 'd': ''}
+            return render_template('testquiz.html', **data, answers=marked_ans, subject=subject, topic=topic, tid=testid)
         except:
             return redirect(url_for('give_test'))
     if request.method == 'POST':
@@ -476,105 +479,122 @@ def test(testid):
         flag = request.form['flag']
         if flag == 'get':
             num = request.form['no']
-            results = cur.execute('SELECT test_id,qid,q,a,b,c,d,ans,marks from questions where test_id = %s and qid =%s',(testid, num))
+            results = cur.execute(
+                'SELECT test_id,qid,q,a,b,c,d,ans,marks from questions where test_id = %s and qid =%s', (testid, num))
             if results > 0:
                 data = cur.fetchone()
                 del data['ans']
                 cur.close()
                 return json.dumps(data)
-        elif flag=='mark':
+        elif flag == 'mark':
             qid = request.form['qid']
             ans = request.form['ans']
             cur = mysql.connection.cursor()
-            results = cur.execute('SELECT * from studentans where test_id =%s and qid = %s and email = %s', (testid, qid, session['email']))
+            results = cur.execute(
+                'SELECT * from studentans where test_id =%s and qid = %s and email = %s', (testid, qid, session['email']))
             if results > 0:
-                cur.execute('UPDATE studentans set ans = %s where test_id = %s and qid = %s and email = %s', (ans,testid, qid, session['email']))
+                cur.execute('UPDATE studentans set ans = %s where test_id = %s and qid = %s and email = %s',
+                            (ans, testid, qid, session['email']))
                 mysql.connection.commit()
                 cur.close()
             else:
-                cur.execute('INSERT INTO studentans(email,test_id,qid,ans) values(%s,%s,%s,%s)', (session['email'], testid, qid, ans,))
+                cur.execute('INSERT INTO studentans(email,test_id,qid,ans) values(%s,%s,%s,%s)',
+                            (session['email'], testid, qid, ans,))
                 mysql.connection.commit()
                 cur.close()
-            return json.dumps({'success':True}), 200, {'ContentType':'application/json'} 
-        elif flag=='time':
+            return json.dumps({'success': True}), 200, {'ContentType': 'application/json'}
+        elif flag == 'time':
             cur = mysql.connection.cursor()
             time_left = request.form['time']
             try:
-                cur.execute('UPDATE teststatus set time_left=SEC_TO_TIME(%s) where test_id = %s and email = %s and completed=0', (time_left, testid, session['email'],))
+                cur.execute('UPDATE teststatus set time_left=SEC_TO_TIME(%s) where test_id = %s and email = %s and completed=0',
+                            (time_left, testid, session['email'],))
                 mysql.connection.commit()
                 cur.close()
-                return json.dumps({'time':'fired'})
+                return json.dumps({'time': 'fired'})
             except:
                 pass
         else:
             cur = mysql.connection.cursor()
-            cur.execute('UPDATE teststatus set completed=1,time_left=sec_to_time(0) where test_id = %s and email = %s', (testid, session['email'],))
+            cur.execute('UPDATE teststatus set completed=1,time_left=sec_to_time(0) where test_id = %s and email = %s',
+                        (testid, session['email'],))
             mysql.connection.commit()
             cur.close()
             flash("Exam submitted successfully", 'info')
-            return json.dumps({'sql':'fired'})
+            return json.dumps({'sql': 'fired'})
+
 
 @app.route("/give-test", methods=['GET', 'POST'])
 @is_logged
 def give_test():
     cur = mysql.connection.cursor()
-    x=1
+    x = 1
     results = cur.execute('SELECT subject,topic,test_id,duration FROM testinfo WHERE (((%s,test_id) NOT IN (SELECT email,test_id FROM teststatus WHERE completed=%s)) AND testinfo.class_id=%s AND testinfo.start<NOW() AND testinfo.end>NOW())',
-                          (session['email'],x, session['class_id'],))
+                          (session['email'], x, session['class_id'],))
     cresults = cur.fetchall()
     cur.close()
     return render_template("givetest.html", cresults=cresults)
 
-@app.route('/randomize', methods = ['POST'])
+
+@app.route('/randomize', methods=['POST'])
 def random_gen():
-	if request.method == "POST":
-		id = request.form['id']
-		cur = mysql.connection.cursor()
-		results = cur.execute('SELECT count(*) from questions where test_id = %s', [id])
-		if results > 0:
-			data = cur.fetchone()
-			total = data['count(*)']
-			nos = list(range(1,int(total)+1))
-			random.Random(id).shuffle(nos)
-			cur.close()
-			return json.dumps(nos)
-                
-@app.route('/video_feed', methods=['GET','POST'])
+    if request.method == "POST":
+        id = request.form['id']
+        cur = mysql.connection.cursor()
+        results = cur.execute(
+            'SELECT count(*) from questions where test_id = %s', [id])
+        if results > 0:
+            data = cur.fetchone()
+            total = data['count(*)']
+            nos = list(range(1, int(total)+1))
+            random.Random(id).shuffle(nos)
+            cur.close()
+            return json.dumps(nos)
+
+
+@app.route('/video_feed', methods=['GET', 'POST'])
 @is_logged
 def video_feed():
-	if request.method == "POST":
-		imgData = request.form['data[imgData]']
-		testid = request.form['data[testid]']
-		voice_db = request.form['data[voice_db]']
-		proctorData = camera.get_frame(imgData)
-		jpg_as_text = proctorData['jpg_as_text']
-		mob_status =proctorData['mob_status']
-		person_status = proctorData['person_status']
-		# user_move1 = proctorData['user_move1']
-		# user_move2 = proctorData['user_move2']
-		# eye_movements = proctorData['eye_movements']
-		cur = mysql.connection.cursor()
-		results = cur.execute('INSERT INTO proctoring_log (email, name, test_id, voice_db, img_log, phone_detection, person_status) values(%s,%s,%s,%s,%s,%s,%s)',(dict(session)['email'], dict(session)['name'], testid, voice_db, jpg_as_text, mob_status, person_status))
-		mysql.connection.commit()
-		cur.close()
-		if(results > 0):
-			return "recorded image of video"
-		else:
-			return "error in video"
+    if request.method == "POST":
+        imgData = request.form['data[imgData]']
+        testid = request.form['data[testid]']
+        voice_db = request.form['data[voice_db]']
+        # proctorData = camera.get_frame(imgData)
+        yolov3_model_v3_path("./models/yolov3.weights")
+        jpg_as_text = base64.b64encode(imgData.read()).decode('utf-8')
+        proctorData = get_analysis(jpg_as_text, "./models/shape_predictor_68_face_landmarks.dat")
+        # jpg_as_text = proctorData['jpg_as_text']
+        mob_status = proctorData['mob_status']
+        person_status = proctorData['person_status']
+        # user_move1 = proctorData['user_move1']
+        # user_move2 = proctorData['user_move2']
+        # eye_movements = proctorData['eye_movements']
+        cur = mysql.connection.cursor()
+        results = cur.execute('INSERT INTO proctoring_log (email, name, test_id, voice_db, img_log, phone_detection, person_status) values(%s,%s,%s,%s,%s,%s,%s)', (dict(
+            session)['email'], dict(session)['name'], testid, voice_db, jpg_as_text, mob_status, person_status))
+        mysql.connection.commit()
+        cur.close()
+        if (results > 0):
+            return "recorded image of video"
+        else:
+            return "error in video"
 
-@app.route('/window_event', methods=['GET','POST'])
+
+@app.route('/window_event', methods=['GET', 'POST'])
 @is_logged
 def window_event():
-	if request.method == "POST":
-		testid = request.form['testid']
-		cur = mysql.connection.cursor()
-		results = cur.execute('INSERT INTO window_estimation_log (email, test_id, name, window_event) values(%s,%s,%s,%s)', (dict(session)['email'], testid, dict(session)['name'], 1,))
-		mysql.connection.commit()
-		cur.close()
-		if(results > 0):
-			return "recorded window"
-		else:
-			return "error in window"
+    if request.method == "POST":
+        testid = request.form['testid']
+        cur = mysql.connection.cursor()
+        results = cur.execute('INSERT INTO window_estimation_log (email, test_id, name, window_event) values(%s,%s,%s,%s)', (dict(
+            session)['email'], testid, dict(session)['name'], 1,))
+        mysql.connection.commit()
+        cur.close()
+        if (results > 0):
+            return "recorded window"
+        else:
+            return "error in window"
+
 
 def totmarks(email, tests):
     cur = mysql.connection.cursor()
@@ -689,67 +709,88 @@ def upcoming_tests():
 @app.route('/viewstudentslogs', methods=['GET'])
 @is_logged
 def viewstudentslogs():
-	cur = mysql.connection.cursor()
-	results = cur.execute('SELECT test_id,subject,topic from testinfo where email = %s', (session['email'],))
-	if results > 0:
-		cresults = cur.fetchall()
-		cur.close()
-		return render_template("viewstudentslogs.html", cresults = cresults)
-	else:
-		return render_template("viewstudentslogs.html", cresults = None)
+    cur = mysql.connection.cursor()
+    results = cur.execute(
+        'SELECT test_id,subject,topic from testinfo where email = %s', (session['email'],))
+    if results > 0:
+        cresults = cur.fetchall()
+        cur.close()
+        return render_template("viewstudentslogs.html", cresults=cresults)
+    else:
+        return render_template("viewstudentslogs.html", cresults=None)
 
-@app.route('/displaystudentsdetails', methods=['GET','POST'])
+
+@app.route('/displaystudentsdetails', methods=['GET', 'POST'])
 @is_logged
 def displaystudentsdetails():
-	if request.method == 'POST':
-		tidoption = request.form['choosetid']
-		cur = mysql.connection.cursor()
-		cur.execute('SELECT DISTINCT proctoring_log.email,proctoring_log.test_id,testinfo.subject,testinfo.topic from proctoring_log JOIN testinfo ON proctoring_log.test_id=testinfo.test_id where proctoring_log.test_id = %s', [tidoption])
-		callresults = cur.fetchall()
-		cur.close()
-		return render_template("displaystudentsdetails.html", callresults = callresults)
+    if request.method == 'POST':
+        tidoption = request.form['choosetid']
+        cur = mysql.connection.cursor()
+        cur.execute(
+            'SELECT DISTINCT proctoring_log.email,proctoring_log.test_id,testinfo.subject,testinfo.topic from proctoring_log JOIN testinfo ON proctoring_log.test_id=testinfo.test_id where proctoring_log.test_id = %s', [tidoption])
+        callresults = cur.fetchall()
+        cur.close()
+        return render_template("displaystudentsdetails.html", callresults=callresults)
 
-@app.route('/studentmonitoringstats/<testid>/<email>', methods=['GET','POST'])
-@is_logged
-def studentmonitoringstats(testid,email):
-	return render_template("stat_student_monitoring.html", testid = testid, email = email)
 
-@app.route('/wineventstudentslogs/<testid>/<email>', methods=['GET','POST'])
+@app.route('/studentmonitoringstats/<testid>/<email>', methods=['GET', 'POST'])
 @is_logged
-def wineventstudentslogs(testid,email):
-	cur = mysql.connection.cursor()
-	cur.execute('SELECT * from window_estimation_log where test_id = %s and email = %s', (testid, email))
-	callresults = cur.fetchall()
-	cur.close()
-	return render_template("wineventstudentlog.html", testid = testid, email = email, callresults = callresults)
+def studentmonitoringstats(testid, email):
+    return render_template("stat_student_monitoring.html", testid=testid, email=email)
 
-@app.route('/mobdisplaystudentslogs/<testid>/<email>', methods=['GET','POST'])
-@is_logged
-def mobdisplaystudentslogs(testid,email):
-	cur = mysql.connection.cursor()
-	cur.execute('SELECT * from proctoring_log where test_id = %s and email = %s and phone_detection = 1', (testid, email))
-	callresults = cur.fetchall()
-	cur.close()
-	return render_template("mobdisplaystudentslogs.html", testid = testid, email = email, callresults = callresults)
 
-@app.route('/persondisplaystudentslogs/<testid>/<email>', methods=['GET','POST'])
+@app.route('/wineventstudentslogs/<testid>/<email>', methods=['GET', 'POST'])
 @is_logged
-def persondisplaystudentslogs(testid,email):
-	cur = mysql.connection.cursor()
-	cur.execute('SELECT * from proctoring_log where test_id = %s and email = %s and person_status = 1', (testid, email))
-	callresults = cur.fetchall()
-	cur.close()
-	return render_template("persondisplaystudentslogs.html",testid = testid, email = email, callresults = callresults)
+def wineventstudentslogs(testid, email):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'SELECT * from window_estimation_log where test_id = %s and email = %s', (testid, email))
+    callresults = cur.fetchall()
+    cur.close()
+    return render_template("wineventstudentlog.html", testid=testid, email=email, callresults=callresults)
 
-@app.route('/audiodisplaystudentslogs/<testid>/<email>', methods=['GET','POST'])
+
+@app.route('/mobdisplaystudentslogs/<testid>/<email>', methods=['GET', 'POST'])
 @is_logged
-def audiodisplaystudentslogs(testid,email):
-	cur = mysql.connection.cursor()
-	cur.execute('SELECT * from proctoring_log where test_id = %s and email = %s', (testid, email))
-	callresults = cur.fetchall()
-	cur.close()
-	return render_template("audiodisplaystudentslogs.html", testid = testid, email = email, callresults = callresults)
+def mobdisplaystudentslogs(testid, email):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'SELECT * from proctoring_log where test_id = %s and email = %s and phone_detection = 1', (testid, email))
+    callresults = cur.fetchall()
+    cur.close()
+    return render_template("mobdisplaystudentslogs.html", testid=testid, email=email, callresults=callresults)
+
+
+@app.route('/persondisplaystudentslogs/<testid>/<email>', methods=['GET', 'POST'])
+@is_logged
+def persondisplaystudentslogs(testid, email):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'SELECT * from proctoring_log where test_id = %s and email = %s and person_status = 1', (testid, email))
+    callresults = cur.fetchall()
+    cur.close()
+    return render_template("persondisplaystudentslogs.html", testid=testid, email=email, callresults=callresults)
+
+
+@app.route('/audiodisplaystudentslogs/<testid>/<email>', methods=['GET', 'POST'])
+@is_logged
+def audiodisplaystudentslogs(testid, email):
+    cur = mysql.connection.cursor()
+    cur.execute(
+        'SELECT * from proctoring_log where test_id = %s and email = %s', (testid, email))
+    callresults = cur.fetchall()
+    cur.close()
+    return render_template("audiodisplaystudentslogs.html", testid=testid, email=email, callresults=callresults)
+
 
 if __name__ == "__main__":
+    if (os.path.isfile("./models/yolov3.weights")):
+        pass
+    else:
+        wget.download("https://pjreddie.com/media/files/yolov3.weights", "./models/yolov3.weights")
+    if (os.path.isfile("./models/shape_predictor_68_face_landmarks.dat")):
+        pass
+    else:
+        wget.download("https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat?raw=true", "./models/shape_predictor_68_face_landmarks.dat")
     app.run(debug=True, port=os.getenv("PORT", default=5000), host='0.0.0.0')
     # app.run(host='192.168.1.8', port=5000, debug=True, threaded=False)
