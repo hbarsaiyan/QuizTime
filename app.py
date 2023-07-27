@@ -555,6 +555,14 @@ def random_gen():
 @app.route('/video_feed', methods=['GET', 'POST'])
 @is_logged
 def video_feed():
+    if (os.path.isfile("./models/yolov3.weights")):
+        pass
+    else:
+        wget.download("https://pjreddie.com/media/files/yolov3.weights", "./models/yolov3.weights")
+    if (os.path.isfile("./models/shape_predictor_68_face_landmarks.dat")):
+        pass
+    else:
+        wget.download("https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat?raw=true", "./models/shape_predictor_68_face_landmarks.dat")
     if request.method == "POST":
         imgData = request.form['data[imgData]']
         testid = request.form['data[testid]']
@@ -784,13 +792,5 @@ def audiodisplaystudentslogs(testid, email):
 
 
 if __name__ == "__main__":
-    if (os.path.isfile("./models/yolov3.weights")):
-        pass
-    else:
-        wget.download("https://pjreddie.com/media/files/yolov3.weights", "./models/yolov3.weights")
-    if (os.path.isfile("./models/shape_predictor_68_face_landmarks.dat")):
-        pass
-    else:
-        wget.download("https://github.com/italojs/facial-landmarks-recognition/blob/master/shape_predictor_68_face_landmarks.dat?raw=true", "./models/shape_predictor_68_face_landmarks.dat")
     app.run(debug=True, port=os.getenv("PORT", default=5000), host='0.0.0.0')
     # app.run(host='192.168.1.8', port=5000, debug=True, threaded=False)
