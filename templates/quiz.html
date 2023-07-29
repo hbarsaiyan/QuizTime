@@ -1,5 +1,32 @@
 {% extends 'exam_layout.html' %}
 {% block body %}
+<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.min.js"
+	integrity="sha512-IHQXMp2ha/aGMPumvzKLQEs9OrPhIOaEXxQGV5vnysMtEmNNcmUqk82ywqw7IbbvrzP5R3Hormh60UVDBB98yg=="
+	crossorigin="anonymous"
+></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.all.js"
+	integrity="sha512-uRc/2ZGOQYtxuR4Uoq8K13eLYuGFWyW3P/U8/qI2wP3BuHQxFhuoiEreDpC80/L6HbPM5IhAVKgK8l7lWwyJkw=="
+	crossorigin="anonymous"
+></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.all.min.js"
+	integrity="sha512-S8dy60Ic3uMzmNBB0ocD0TaIBdciM2JLjG2ZRaOhjNwYYO6I1aeRg/mY+T/x4WSx9oh42HvqHB0c7aK3d17Qog=="
+	crossorigin="anonymous"
+></script>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.css"
+	integrity="sha512-3Mf7x3QC98zKhMBTTGj5fDu2wQE9bgC/MmyFLRuyUTWZRWM4txPrzVfWqrCOWs9Il79iEw5T6+N7fbXXSUafrQ=="
+	crossorigin="anonymous"
+/>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.js"
+	integrity="sha512-/2LAWgYlRv0SU4+anDImXAEXGumWtSgZEpRkr6NJ7ehenRBRhWjpJx350BLc+ddOy024/vLjI6ymeDmfAuqPdQ=="
+	crossorigin="anonymous"
+></script>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 <script type="text/javascript"> var answers = "{{answers}}";</script>
 <script>var tid = "{{tid}}";</script>
@@ -11,20 +38,20 @@
                              <div class="text-center text-md-center mb-4 mt-md-0">
                                  <div class="card-body">
                                   <div class="row">
-                                    <div class="col"><span><h4 class="display-6">Name: {{session['name']}}</h4></span></div>
-                                    <div class="col"><span><h4 class="display-6">Email: {{session['email']}}</h4></span></div>
+                                    <div class="col"><span><h4 class="display-6">SUBJECT: {{subject}}</h4></span></div>
+                                    <div class="col"><span><h4 class="display-6">TOPIC: {{topic}}</h4></span></div>
                                   </div>
                                   </div>
                              </div>
                              <div class="row">
                               <div class="form-group col-3">
                                 <div class="mb-0 h6">
-                                  SUBJECT: {{subject}}
+                                  Name: {{session['name']}}
                                   </div>
                                   </div>
                                   <div class="form-group col-3">
                                     <div class="mb-0 h6">
-                                      TOPIC: {{topic}}
+                                      Email: {{session['email']}}
                                       </div>
                                       </div>
                                       <div class="form-group col-3">
@@ -96,6 +123,7 @@
   <div class="btn btn-block btn-primary" id="finish">Finish Test</div>
   </div>
 
+  <center>
   <div class="form-group">
     <div class="container" id ="videocheck" style="display: none;">
       <div class="justify-content-center align-items-center">
@@ -105,6 +133,7 @@
       </div>
       </div>
     </div>
+  </center>
 
   </div>
  </div>
@@ -116,14 +145,5 @@
   document.getElementById('videocheck').style.display = "block";
   startStreaming();
   captureSnapshot();
-    </script>  
-  <footer id="sticky-footer" class="py-4">
-    <div class="d-flex text-center justify-content-center align-items-center" role="contentinfo">
-                  <p class="font-weight-bold font-medium mb-0">Copyright © MyProctor.ai
-                      <span class="current-year"><script>document.write(new Date().getFullYear())</script></span>. All rights reserved.</p>
-    </div><br>
-    <div class="d-flex text-center justify-content-center align-items-center" role="contentinfo">
-          <p class="font-weight-bold font-small mb-0"><span>Made with &#128151 By NARENDER KESWANI</span></p>
-  </div>
-  </footer>
+    </script> 
 {% endblock %}

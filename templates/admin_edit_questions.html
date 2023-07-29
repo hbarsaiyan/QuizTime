@@ -7,13 +7,13 @@
                     <div class="col-12 col-md-8 col-lg-6 justify-content-center">
                         <div class="card bg-primary shadow-soft border-light p-4">
                             <div class="card-header text-center pb-0">
-                                <h2 class="h1 col">View Students Logs</h2>  
+                                <h2 class="h1 col">Edit Questions</h2>  
                             </div>
                             <div class="card-body">
-							    <form action="displaystudentsdetails" method="POST" class="mt-4">
+							    <form action="admin_display_questions" method="POST" class="mt-4">
                                     <div class="form-group">
-                                        <label for="exampleInputIcon3">CHOOSE TEST:</label>
                                         {% if cresults is not none %}
+                                        <label for="exampleInputIcon3">CHOOSE TEST:</label>
                                         <div class="input-group mb-4">
                                             <select name="choosetid" class="form-control" id="exampleFormControlSelect2" >
                                             <option disabled selected>Choose</option>

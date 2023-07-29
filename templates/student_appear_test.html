@@ -1,4 +1,33 @@
 {% extends 'layout.html' %} {% block body %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.min.js"
+	integrity="sha512-IHQXMp2ha/aGMPumvzKLQEs9OrPhIOaEXxQGV5vnysMtEmNNcmUqk82ywqw7IbbvrzP5R3Hormh60UVDBB98yg=="
+	crossorigin="anonymous"
+></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.all.js"
+	integrity="sha512-uRc/2ZGOQYtxuR4Uoq8K13eLYuGFWyW3P/U8/qI2wP3BuHQxFhuoiEreDpC80/L6HbPM5IhAVKgK8l7lWwyJkw=="
+	crossorigin="anonymous"
+></script>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.all.min.js"
+	integrity="sha512-S8dy60Ic3uMzmNBB0ocD0TaIBdciM2JLjG2ZRaOhjNwYYO6I1aeRg/mY+T/x4WSx9oh42HvqHB0c7aK3d17Qog=="
+	crossorigin="anonymous"
+></script>
+<link
+	rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.css"
+	integrity="sha512-3Mf7x3QC98zKhMBTTGj5fDu2wQE9bgC/MmyFLRuyUTWZRWM4txPrzVfWqrCOWs9Il79iEw5T6+N7fbXXSUafrQ=="
+	crossorigin="anonymous"
+/>
+<script
+	src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.js"
+	integrity="sha512-/2LAWgYlRv0SU4+anDImXAEXGumWtSgZEpRkr6NJ7ehenRBRhWjpJx350BLc+ddOy024/vLjI6ymeDmfAuqPdQ=="
+	crossorigin="anonymous"
+></script>
+
+
 <main>
 	<section class="min-vh-75 d-flex bg-primary align-items-center">
 		<div class="container">
@@ -10,6 +39,7 @@
 						</div>
 						<div class="card-body">
 							<form
+								id="startform"
 								action="intermediate"
 								method="POST"
 								class="mt-4"
@@ -71,11 +101,13 @@
 										</div>
 									</center>
 									<br />
-									<input
+									<!-- <input
 										type="submit"
 										class="btn btn-block btn-primary"
 										value="GIVE TEST"
-									/>
+										onclick="return funStartExam()"
+									/> -->
+									<button id="start" class="btn btn-block btn-primary">START TEST</button>
 								</div>
 							</form>
 						</div>
@@ -90,6 +122,32 @@
 		var capture = document.getElementById('capture');
 		var snapshot = document.getElementById('snapshot');
 		var cameraStream = null;
+
+		$('#start').on("click", function(e) {
+     funStartExam(e);
+
+});
+		function funStartExam(e) {
+			e.preventDefault();
+			var form = document.getElementById('startform');
+			Swal.fire({
+				title: '<strong>BEFORE EXAM LOGIN RULES</strong>',
+				icon: 'warning',
+				html:
+					'<h5>ONLINE EXAM RULES TO BE FOLLOWED STRICTLY</h5>, ' +
+					'<ol><li>Dont minimize the window it will be monitored.</li><li>Check that your camera is proper.</li><li>Dont try to use mobile or any other material it will be monitored and strict action will be taken.</li><li>Use calculator which is given by our system not from your laptop/desktop/mobile.</li><li>Dont use incognito browser & also check that your cookies are enabled.</li></ol>',
+				showCloseButton: false,
+				showCancelButton: false,
+				focusConfirm: true,
+				confirmButtonColor: '#202124',
+				confirmButtonText: 'OK, BEGIN EXAM!',
+				confirmButtonAriaLabel: 'We are abide by rules!',
+			}).then((result) => {
+				if (result.isConfirmed) {
+					form.submit();
+				}
+			});
+		}
 
 		btnCapture.addEventListener('click', captureSnapshot);
 

@@ -1,73 +1,137 @@
 <html>
-<head>
-<title>Quiz App</title>
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.0.7/css/all.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css">
-<!-- <link rel="stylesheet" href="//use.fontawesome.com/releases/v5.0.7/css/all.css"> -->
-<!-- <link rel="canonical" href="https://themesberg.com/product/ui-kits/neumorphism-ui/" /> -->
+	<head>
+		<title>QuizTime</title>
 
-    
-<!-- Favicon -->
-<!-- <link rel="apple-touch-icon" sizes="120x120" href="{{ url_for('static', filename='assets/img/favicon/apple-touch-icon.png') }}"> -->
-<!-- <link rel="icon" type="image/png" sizes="32x32" href="{{ url_for('static', filename='assets/img/favicon/favicon-32x32.png') }}"> -->
-<!-- <link rel="icon" type="image/png" sizes="16x16"  href="{{ url_for('static', filename='assets/img/favicon/favicon-16x16.png') }}"> -->
-<!-- <link rel="manifest" href="{{ url_for('static', filename='assets/img/favicon/site.webmanifest') }}"> -->
-<!-- <link rel="mask-icon" color="#ffffff"  href="{{ url_for('static', filename='static/assets/img/favicon/safari-pinned-tab.svg') }}"> -->
+		<!-- Bootstrap -->
+		<link
+			rel="stylesheet"
+			href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+		/>
+		<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
 
-<!-- Pixel CSS -->
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='css/neumorphism.css') }}">
-    <!-- <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script> -->
-  </head>
-  <body class="vh-100">
-    {% include 'includes/_navbar.html' %}
-    <div class="container">
-      {% include 'includes/_messages.html' %}
-      {% block body %}{% endblock %}
-    </div>
+		<!-- SnackBar -->
+		<link
+			ref="stylesheet"
+			type="text/css"
+			href="{{ url_for('static', filename='snackbar.min.css') }}"
+		/>
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="{{ url_for('static', filename='mysnackbarcss.css') }}"
+		/>
+		<script src="{{ url_for('static', filename='snackbar.min.js') }}"></script>
 
-<!-- Core -->
-<script src="{{ url_for('static', filename='vendor/headroom.js/dist/headroom.min.js') }}"></script>
-<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+		<!-- Fontawesome -->
+		<link
+			rel="stylesheet"
+			href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"
+		/>
 
+		<!-- Neumorphism CSS -->
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/neumorphism.css') }}"
+		/>
 
-<!--Lottie Js-->
-<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
-<!-- <script src="{{ url_for('static', filename='vendor/jquery/dist/jquery.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/popper.js/dist/umd/popper.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/bootstrap/dist/js/bootstrap.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/headroom.js/dist/headroom.min.js') }}"></script> -->
+		<!-- Pixel CSS -->
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/pixel.css') }}"
+		/>
+		<script src="{{ url_for('static', filename='assets/js/pixel.js') }}"></script>
 
-<!-- Vendor JS -->
-<!-- <script src="{{ url_for('static', filename='vendor/onscreen/dist/on-screen.umd.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/nouislider/distribute/nouislider.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/waypoints/lib/jquery.waypoints.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/jarallax/dist/jarallax.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/jquery.counterup/jquery.counterup.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/jquery-countdown/dist/jquery.countdown.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script> -->
-<!-- <script src="{{ url_for('static', filename='vendor/prismjs/prism.js') }}"></script> -->
-<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
-<!-- Volt CSS -->
-<script src="sweetalert2.all.min.js"></script>
-<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='volt/css/volt.css') }}">
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.23/css/jquery.dataTables.min.css">
-<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css">
-<script src="https://cdn.datatables.net/1.10.23/js/jquery.dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
-<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
-<!-- <script async defer src="https://buttons.github.io/buttons.js"></script> -->
+		<!-- Headroom JS -->
+		<script src="https://unpkg.com/headroom.js@0.12.0/dist/headroom.min.js"></script>
 
-<!-- Neumorphism JS -->
-<script src="{{ url_for('static', filename='js/neumorphism.js') }}"></script>
+		<!--Lottie Js-->
+		<script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
 
-  <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script> -->
-  <!-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script> -->
-</body>
+		<!-- JQuery -->
+		<script src="https://code.jquery.com/jquery-3.7.0.min.js"></script>
+
+		<!-- DataTables -->
+		<link
+			rel="stylesheet"
+			href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.min.css"
+		/>
+		<script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+		<link
+			rel="stylesheet"
+			href="https://cdn.datatables.net/buttons/1.6.5/css/buttons.dataTables.min.css"
+		/>
+		<script src="https://cdn.datatables.net/buttons/1.6.5/js/dataTables.buttons.min.js"></script>
+
+		<!-- JS Zip -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.3/jszip.min.js"></script>
+
+		<!-- PDF Make -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js"></script>
+
+		<!-- JS Buttons -->
+		<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.html5.min.js"></script>
+		<script src="https://cdn.datatables.net/buttons/1.6.5/js/buttons.print.min.js"></script>
+
+		<!-- Neumorphism JS -->
+		<script src="{{ url_for('static', filename='js/neumorphism.js') }}"></script>
+
+		<!-- SweetAlert -->
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.min.js"
+			integrity="sha512-IHQXMp2ha/aGMPumvzKLQEs9OrPhIOaEXxQGV5vnysMtEmNNcmUqk82ywqw7IbbvrzP5R3Hormh60UVDBB98yg=="
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.all.js"
+			integrity="sha512-uRc/2ZGOQYtxuR4Uoq8K13eLYuGFWyW3P/U8/qI2wP3BuHQxFhuoiEreDpC80/L6HbPM5IhAVKgK8l7lWwyJkw=="
+			crossorigin="anonymous"
+		></script>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.all.min.js"
+			integrity="sha512-S8dy60Ic3uMzmNBB0ocD0TaIBdciM2JLjG2ZRaOhjNwYYO6I1aeRg/mY+T/x4WSx9oh42HvqHB0c7aK3d17Qog=="
+			crossorigin="anonymous"
+		></script>
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.css"
+			integrity="sha512-3Mf7x3QC98zKhMBTTGj5fDu2wQE9bgC/MmyFLRuyUTWZRWM4txPrzVfWqrCOWs9Il79iEw5T6+N7fbXXSUafrQ=="
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://cdnjs.cloudflare.com/ajax/libs/limonte-sweetalert2/10.15.7/sweetalert2.js"
+			integrity="sha512-/2LAWgYlRv0SU4+anDImXAEXGumWtSgZEpRkr6NJ7ehenRBRhWjpJx350BLc+ddOy024/vLjI6ymeDmfAuqPdQ=="
+			crossorigin="anonymous"
+		></script>
+
+		<!-- Popper JS -->
+		<script src="https://unpkg.com/@popperjs/core@2.11.8/dist/umd/popper.min.js"></script>
+
+		<!-- Vendor JS -->
+		<script src="{{ url_for('static', filename='vendor/onscreen/dist/on-screen.umd.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/nouislider/distribute/nouislider.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/bootstrap-datepicker/dist/js/bootstrap-datepicker.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/waypoints/lib/jquery.waypoints.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/jarallax/dist/jarallax.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/jquery.counterup/jquery.counterup.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/jquery-countdown/dist/jquery.countdown.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+		<script src="{{ url_for('static', filename='vendor/prismjs/prism.js') }}"></script>
+    {% block head %}{% endblock %}
+	</head>
+	<body class="vh-100">
+		{% include 'includes/_navbar.html' %}
+		<div class="container">
+			{% include 'includes/_messages.html' %}
+		</div>
+    <div id="snackbar">
+			Don't try to open new window or any other applications. You are
+			being monitored!
+		</div>
+
+		{% block body %}{% endblock %}
+	</body>
 </html>

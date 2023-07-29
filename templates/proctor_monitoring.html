@@ -1,5 +1,4 @@
-{% extends 'layout.html' %} {% block body %}
-<br><br>
+{% extends 'layout.html' %} {% block body %} <br /><br />
 <h1 align="center">Student Monitoring Statistics of {{email}}</h1>
 <br />
 
@@ -42,7 +41,7 @@
 						<br />
 						<center>
 							<a
-								href="/mobdisplaystudentslogs/{{testid}}/{{email}}"
+								href="/proctor_mobile_log/{{testid}}/{{email}}"
 								class="btn btn-primary text-secondary mr-3"
 								>Mobile Detected</a
 							>
@@ -55,12 +54,16 @@
 				<div class="card shadow">
 					<div class="card-body">
 						<center>
-							<img src="{{ url_for('static', filename='multipleperson.png')}}" alt="" width="350px" />
+							<img
+								src="{{ url_for('static', filename='multipleperson.png')}}"
+								alt=""
+								width="350px"
+							/>
 						</center>
 						<br />
 						<center>
 							<a
-								href="/persondisplaystudentslogs/{{testid}}/{{email}}"
+								href="/proctor_multiple_person_log/{{testid}}/{{email}}"
 								class="btn btn-primary text-secondary mr-3"
 								>Multiple Persons Detected</a
 							>
@@ -69,16 +72,20 @@
 				</div>
 			</div>
 
-            <div class="col-4 box">
+			<div class="col-4 box">
 				<div class="card shadow">
 					<div class="card-body">
 						<center>
-							<img src="{{ url_for('static', filename='audioevent.png')}}" alt="" width="350px" />
+							<img
+								src="{{ url_for('static', filename='audioevent.png')}}"
+								alt=""
+								width="350px"
+							/>
 						</center>
 						<br />
 						<center>
 							<a
-								href="/audiodisplaystudentslogs/{{testid}}/{{email}}"
+								href="/proctor_audio_log/{{testid}}/{{email}}"
 								class="btn btn-primary text-secondary mr-3"
 								>Audio Events</a
 							>
