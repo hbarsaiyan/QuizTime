@@ -25,12 +25,14 @@ import random
 import json
 import csv
 import smtplib
+from dotenv import load_dotenv
 from flask_session import Session
 from flask_cors import CORS, cross_origin
 from wtforms_components import TimeField
 from wtforms.fields import DateField
 from wtforms.validators import ValidationError
 
+load_dotenv()
 app = Flask(__name__)
 
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST')
@@ -50,13 +52,14 @@ app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
 app.config['SESSION_PERMANENT'] = True
 app.config['PERMANENT_SESSION_LIFETIME'] = timedelta(minutes=30)
 app.config['CORS_HEADERS'] = 'Content-Type'
+
 CORS(app)
 Session(app)
 Mobility(app)
 
 mysql = MySQL(app)
 
-
+# Function to check if user is logged in
 def is_logged(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -69,7 +72,8 @@ def is_logged(f):
     return wrap
 
 
-def faceVerify(storedImage, inputImage):
+# Function to face verify
+def face_verify(storedImage, inputImage):
     nparr1 = np.frombuffer(base64.b64decode(storedImage), np.uint8)
     nparr2 = np.frombuffer(base64.b64decode(inputImage), np.uint8)
     image1 = cv2.imdecode(nparr1, cv2.COLOR_BGR2GRAY)
@@ -96,7 +100,7 @@ def login_email():
         account = cursor.fetchone()
         if account:
             imgdata2 = account['user_image']
-            img_result = faceVerify(imgdata1, imgdata2)
+            img_result = face_verify(imgdata1, imgdata2)
             if img_result["verified"] == True:
                 session['logged_in'] = True
                 session['email'] = account['email']
@@ -128,7 +132,7 @@ def login_phone():
         account = cursor.fetchone()
         if account:
             imgdata2 = account['user_image']
-            img_result = faceVerify(imgdata1, imgdata2)
+            img_result = face_verify(imgdata1, imgdata2)
             if img_result["verified"] == True:
                 session['logged_in'] = True
                 session['email'] = account['email']
@@ -187,6 +191,7 @@ def register():
                                (name, password, phone, dob, email, gender, role, imgdata,))
             mysql.connection.commit()
             msg = 'You have successfully registered !'
+            return render_template('login_email.html', msg=msg)
     elif request.method == 'POST':
         msg = 'Please fill out the form !'
     return render_template('register.html', msg=msg)
@@ -317,12 +322,12 @@ def del_qid(testid, qid):
     mysql.connection.commit()
     if results > 0:
         msg = "Deleted successfully"
-        flash('Deleted successfully.', 'success')
+        flash(msg, 'success')
         cur.close()
         return redirect(url_for('admin_display_questions', success=msg))
     else:
         msg = "ERROR  OCCURED."
-        flash('ERROR  OCCURED.', 'error')
+        flash(msg, 'error')
         return redirect(url_for('admin_display_questions', error=msg))
 
 
@@ -343,12 +348,12 @@ def addques(testid, newq):
                     (testid, newq, ques, ao, bo, co, do, anso, 1))
         cur.connection.commit()
         msg = "Added successfully"
-        flash('Added successfully.', 'success')
+        flash(msg, 'success')
         cur.close()
         return redirect(url_for('admin_display_questions', success=msg))
     else:
         msg = "ERROR  OCCURED."
-        flash('ERROR  OCCURED.', 'error')
+        flash(msg, 'error')
         return redirect(url_for('admin_display_questions', error=msg))
 
 
@@ -374,12 +379,12 @@ def update_quiz(testid, qid):
                     (ques, ao, bo, co, do, anso, testid, qid))
         cur.connection.commit()
         msg = "Updated successfully"
-        flash('Updated successfully.', 'success')
+        flash(msg, 'success')
         cur.close()
         return redirect(url_for('admin_display_questions', success=msg))
     else:
         msg = "ERROR  OCCURED."
-        flash('ERROR  OCCURED.', 'error')
+        flash(msg, 'error')
         return redirect(url_for('admin_display_questions', error=msg))
 
 
@@ -397,13 +402,17 @@ def intermediate():
         if results1 > 0:
             cresults = cur1.fetchone()
             imgdata2 = cresults['user_image']
-            nparr1 = np.frombuffer(base64.b64decode(imgdata1), np.uint8)
-            nparr2 = np.frombuffer(base64.b64decode(imgdata2), np.uint8)
-            image1 = cv2.imdecode(nparr1, cv2.COLOR_BGR2GRAY)
-            image2 = cv2.imdecode(nparr2, cv2.COLOR_BGR2GRAY)
-            img_result = DeepFace.verify(
-                image1, image2, enforce_detection=False)
+            img_result = face_verify(imgdata1, imgdata2)
             if img_result["verified"] == True:
+                time = cur1.execute(
+                    'SELECT time_to_sec(time_left) as time_left,completed from teststatus where email = %s and test_id = %s', (session['email'], test_id,))
+                if time > 0:
+                    time = cur1.fetchone()
+                    is_completed = time['completed']
+                    if is_completed == 0:
+                        time_left = time['time_left']
+                        if time_left <= duration:
+                            duration = time_left
                 ans = cur1.execute(
                     'SELECT qid , ans from studentans where email = %s and test_id = %s', (session['email'], test_id,))
                 marked_ans = {}
@@ -423,7 +432,7 @@ def intermediate():
                 return redirect(url_for('test', testid=test_id))
             else:
                 msg = '⚠️ Face identity could not be verified !'
-                flash('⚠️ Face identity could not be verified !', 'error')
+                flash(msg, 'error')
                 return redirect(url_for('give_test', error=msg))
 
 
@@ -618,7 +627,8 @@ def student_test_results(email):
         results = totmarks(email, results)
         return render_template('student_test_results.html', tests=results)
     else:
-        flash('You are not authorized', 'danger')
+        msg = "'You are not authorized'"
+        flash(msg, 'danger')
         return redirect(url_for('dashboard'))
 
 

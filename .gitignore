@@ -3,3 +3,4 @@ __pycache__/
 flask_session/
 yolov3.weights
 shape_predictor_68_face_landmarks.dat
+.env
