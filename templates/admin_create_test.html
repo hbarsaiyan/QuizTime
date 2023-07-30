@@ -1,51 +1,70 @@
-{% extends 'layout.html' %}
-{% block body %}
-{% from "includes/_formhelpers.html" import render_field %}
+{% extends 'layout.html' %} {% block body %} {% from
+"includes/_formhelpers.html" import render_field %}
 <div id="heading">
-  <div class="col text-center">
-    <h1>Create Test</h1>
-  </div>
+	<div class="col text-center">
+		<h1>Create Test</h1>
+	</div>
 </div>
-<div class="login-box well">
-  <form method="POST" action="" enctype="multipart/form-data">
-    <div class="form-group">
-      {{render_field(form.subject, class="form-control")}}
-    </div>
-    <div class="form-group">
-      {{render_field(form.topic, class="form-control")}}
-    </div>
-    <div class="row">
-      <div class="form-group col-3">
-        {{render_field(form.programme, class="form-control")}}
-      </div>
-      <div class="form-group col-3">
-        {{render_field(form.branch, class="form-control")}}
-      </div>
-      <div class="form-group col-3">
-        {{render_field(form.semester, class="form-control")}}
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-6">
-        {{render_field(form.start_date, class="form-control")}}
-      </div>
-      <div class="form-group col-6">
-        {{render_field(form.start_time, class="form-control")}}
-      </div>
-    </div>
-    <div class="row">
-      <div class="form-group col-6">
-        {{render_field(form.end_date, class="form-control")}}
-      </div>
-      <div class="form-group col-6">
-        {{render_field(form.end_time, class="form-control")}}
-      </div>
-    </div>
-    <div class="form-group">
-      {{render_field(form.duration, class="form-control")}}
-    </div>
+<section class="align-items-center container">
+			<div
+				class="login-box well card bg-primary shadow-soft border-light p-4"
+			>
+				<form method="POST" action="" enctype="multipart/form-data">
+					<div class="form-group">
+						{{render_field(form.subject, class="form-control")}}
+					</div>
+					<div class="form-group">
+						{{render_field(form.topic, class="form-control")}}
+					</div>
+					<div class="row">
+						<div class="form-group col-3">
+							{{render_field(form.programme,
+							class="form-control")}}
+						</div>
+						<div class="form-group col-3">
+							{{render_field(form.branch, class="form-control")}}
+						</div>
+						<div class="form-group col-3">
+							{{render_field(form.semester,
+							class="form-control")}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-6">
+							{{render_field(form.start_date,
+							class="form-control")}}
+						</div>
+						<div class="form-group col-6">
+							{{render_field(form.start_time,
+							class="form-control")}}
+						</div>
+					</div>
+					<div class="row">
+						<div class="form-group col-6">
+							{{render_field(form.end_date,
+							class="form-control")}}
+						</div>
+						<div class="form-group col-6">
+							{{render_field(form.end_time,
+							class="form-control")}}
+						</div>
+					</div>
+					<div class="form-group">
+						{{render_field(form.duration, class="form-control")}}
+					</div>
 
-    <center><p><input type="submit" class="btn btn-primary" value="Submit"></p></center>
-  </form>
-</div>
+					<center>
+						<p>
+							<input
+								type="submit"
+								class="btn btn-primary"
+								value="Submit"
+							/>
+						</p>
+					</center>
+				</form>
+			</div>
+		</div>
+	</div>
+</section>
 {% endblock %}

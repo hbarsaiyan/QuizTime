@@ -60,6 +60,8 @@ Mobility(app)
 mysql = MySQL(app)
 
 # Function to check if user is logged in
+
+
 def is_logged(f):
     @wraps(f)
     def wrap(*args, **kwargs):
@@ -79,7 +81,7 @@ def face_verify(storedImage, inputImage):
     image1 = cv2.imdecode(nparr1, cv2.COLOR_BGR2GRAY)
     image2 = cv2.imdecode(nparr2, cv2.COLOR_BGR2GRAY)
     img_result = DeepFace.verify(
-        image1, image2, model_name='Facenet', enforce_detection=False)
+        image1, image2, enforce_detection=False)
     return img_result
 
 
@@ -623,9 +625,12 @@ def student_test_results(email):
         cur = mysql.connection.cursor()
         results = cur.execute(
             'select distinct(studentans.test_id),subject,topic from studentans,testinfo where studentans.email = %s and studentans.test_id=testinfo.test_id', [email])
-        results = cur.fetchall()
-        results = totmarks(email, results)
-        return render_template('student_test_results.html', tests=results)
+        if (results > 0):
+            results = cur.fetchall()
+            results = totmarks(email, results)
+            return render_template('student_test_results.html', tests=results)
+        else:
+            return render_template('student_test_results.html', tests=None)
     else:
         msg = "'You are not authorized'"
         flash(msg, 'danger')

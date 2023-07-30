@@ -1,7 +1,7 @@
 {% extends 'layout.html' %} {% block body %}
 <div class="mb-5">
+	{% if callresults is not none %}
 	<div class="table-responsive-sm shadow-soft rounded">
-		{% if cresults is not none %}
 		<table class="table table-striped">
 			<tr>
 				<th class="border-0 thf" scope="col">SUBJECT</th>

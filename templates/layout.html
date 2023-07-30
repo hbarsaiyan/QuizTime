@@ -28,13 +28,6 @@
 			href="https://use.fontawesome.com/releases/v5.0.7/css/all.css"
 		/>
 
-		<!-- Neumorphism CSS -->
-		<link
-			type="text/css"
-			rel="stylesheet"
-			href="{{ url_for('static', filename='css/neumorphism.css') }}"
-		/>
-
 		<!-- Pixel CSS -->
 		<link
 			type="text/css"
@@ -42,6 +35,13 @@
 			href="{{ url_for('static', filename='css/pixel.css') }}"
 		/>
 		<script src="{{ url_for('static', filename='assets/js/pixel.js') }}"></script>
+
+		<!-- Neumorphism CSS -->
+		<link
+			type="text/css"
+			rel="stylesheet"
+			href="{{ url_for('static', filename='css/neumorphism.css') }}"
+		/>
 
 		<!-- Headroom JS -->
 		<script src="https://unpkg.com/headroom.js@0.12.0/dist/headroom.min.js"></script>
@@ -120,14 +120,12 @@
 		<script src="{{ url_for('static', filename='vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
 		<script src="{{ url_for('static', filename='vendor/prismjs/prism.js') }}"></script>
-    {% block head %}{% endblock %}
+		{% block head %}{% endblock %}
 	</head>
 	<body class="vh-100">
 		{% include 'includes/_navbar.html' %}
-		<div class="container">
-			{% include 'includes/_messages.html' %}
-		</div>
-    <div id="snackbar">
+		<div class="container">{% include 'includes/_messages.html' %}</div>
+		<div id="snackbar">
 			Don't try to open new window or any other applications. You are
 			being monitored!
 		</div>
