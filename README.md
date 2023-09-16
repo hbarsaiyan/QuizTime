@@ -100,7 +100,7 @@ QuizTime uses an efficient database design to store essential information:
 
 - Users log in using their email/phone number, password, and facial identity verification.
 
-![Login](./docs/image.png)
+![Login](./docs/login.png)
 
 ### Student Interface
 
