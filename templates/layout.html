@@ -13,14 +13,14 @@
 		<link
 			ref="stylesheet"
 			type="text/css"
-			href="{{ url_for('static', filename='snackbar.min.css') }}"
+			href="{{ url_for('static', filename='dist/snackbar.min.css') }}"
 		/>
 		<link
 			type="text/css"
 			rel="stylesheet"
 			href="{{ url_for('static', filename='dist/mysnackbarcss.css') }}"
 		/>
-		<script src="{{ url_for('static', filename='snackbar.min.js') }}"></script>
+		<script src="{{ url_for('static', filename='dist/snackbar.min.js') }}"></script>
 
 		<!-- Fontawesome -->
 		<link
@@ -119,7 +119,7 @@
 		<script src="{{ url_for('static', filename='vendor/jquery-countdown/dist/jquery.countdown.min.js') }}"></script>
 		<script src="{{ url_for('static', filename='vendor/smooth-scroll/dist/smooth-scroll.polyfills.min.js') }}"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-		<script src="{{ url_for('static', filename='vendor/prismjs/prism.js') }}"></script>
+		<script src="{{ url_for('static', filename='dist/prism.js') }}"></script>
 		{% block head %}{% endblock %}
 	</head>
 	<body class="vh-100">
