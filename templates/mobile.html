@@ -1,7 +1,7 @@
 <html class="h-full">
 	<link
 		rel="stylesheet"
-		href="{{ url_for('static', filename='style.css') }}"
+		href="{{ url_for('static', filename='css/style.css') }}"
 	/>
 	<body class="h-full bg-gradient-to-b from-regal-purple to-regal-blue">
 		<main class="relative isolate min-h-full">
@@ -15,7 +15,7 @@
 					Please open website on your computer for the best
 					experience!
 				</h1>
-				<img class="w-3/4 mx-auto" src="../static/mobile.png" alt="">
+				<img class="w-3/4 mx-auto" src="{{ url_for('static', filename='mobile.png')}}" alt="">
 				</div>
 			</div>
 		</main>

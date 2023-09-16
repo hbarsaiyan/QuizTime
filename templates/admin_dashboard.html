@@ -8,7 +8,7 @@
 			<div class="card shadow">
 				<div class="card-body">
 					<center>
-						<img src="static/test.png" alt="" width="350px" />
+						<img src="{{ url_for('static', filename='assets/test.png')}}" alt="" width="350px" />
 					</center>
 					<br />
 					<center>
@@ -26,7 +26,7 @@
 			<div class="card shadow">
 				<div class="card-body">
 					<center>
-						<img src="static/question.png" alt="" width="350px" />
+						<img src="{{ url_for('static', filename='assets/question.png')}}" alt="" width="350px" />
 					</center>
 					<br />
 					<center>
@@ -44,7 +44,7 @@
 			<div class="card shadow">
 				<div class="card-body">
 					<center>
-						<img src="static/result.png" alt="" width="350px" />
+						<img src="{{ url_for('static', filename='assets/result.png')}}" alt="" width="350px" />
 					</center>
 					<br />
 					<center>
@@ -62,7 +62,7 @@
 				<div class="card-body">
 					<center>
 						<img
-							src="static/studentlogs.png"
+							src="{{ url_for('static', filename='assets/studentlogs.png')}}"
 							alt=""
 							width="350px"
 						/>

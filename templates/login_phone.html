@@ -4,7 +4,7 @@
 	</head>
 	<link
 		rel="stylesheet"
-		href="{{ url_for('static', filename='style.css') }}"
+		href="{{ url_for('static', filename='css/style.css') }}"
 	/>
 	<link
 		rel="stylesheet"
@@ -18,7 +18,7 @@
 			<div class="sm:mx-auto sm:w-full sm:max-w-sm">
 				<img
 					class="mx-auto h-auto w-50"
-					src="../static/logo.svg"
+					src="{{ url_for('static', filename='assets/logo.svg')}}"
 					alt="QuizTime"
 				/>
 				<h2
