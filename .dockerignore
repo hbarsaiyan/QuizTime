@@ -1,0 +1,7 @@
+.git*
+**/*.pyc
+.venv/
+**/venv
+**/node_modules
+.gitignore
+.dockerignore
